@@ -1,0 +1,27 @@
+﻿@model IEnumerable<OwnerCars.Models.Owner>
+@{
+    ViewData["Title"] = "Автовалон";
+}
+
+<h1>База данных</h1>
+
+<table class="table">
+    <thead>
+        <tr><th>Имя</th><th>Фамилия</th><th>Возраст</th> <th>Email</th></tr>
+    </thead>
+    <tbody>        
+        @foreach (var owner in Model)
+        {
+            <tr >
+                    <td >@owner.Name</td>
+                    <td>@owner.SurName</td>
+                    <td>@owner.Age</td>
+                    <td>@owner.Email</td>
+                    <td>
+                       <button >Удалить</button>
+                    </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

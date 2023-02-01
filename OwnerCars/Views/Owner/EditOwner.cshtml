@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Автосалон";
+}
+@model OwnerCars.Models.Owner
+
+<h1>Редактировать владельца</h1>
+
+<form method="post" asp-action="Create">
+    <label asp-for="Name">Имя</label>
+    <input asp-for="Name" />
+    <span asp-validation-for="Name"></span>
+
+    <label asp-for="SurName">Фамилия</label>
+    <input asp-for="SurName" />
+    <span asp-validation-for="SurName"></span>
+
+    <label asp-for="Age">Возраст</label>
+    <input asp-for="Age" />
+    <span asp-validation-for="Age"></span>
+
+    <label asp-for="Email"></label>
+    <input asp-for="Email" />
+    <span asp-validation-for="Email"></span>
+
+    <input type="submit" value="Изменить" />
+
+</form>
