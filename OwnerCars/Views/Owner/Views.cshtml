@@ -17,8 +17,13 @@
                     <td>@owner.SurName</td>
                     <td>@owner.Age</td>
                     <td>@owner.Email</td>
+                    <td><form method="get" asp-action="EditOwner" >
+                    <button>Изменить</button>
+                    </form></td>
                     <td>
-                       <button >Удалить</button>
+                    <form method="get" asp-action="Delete">
+                        <button>Удалить</button>
+                    </form>
                     </td>
 
             </tr>

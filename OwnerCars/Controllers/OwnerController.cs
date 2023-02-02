@@ -26,6 +26,7 @@ namespace OwnerCars.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult EditOwner(int? id) 
         {
             if (id == null)
@@ -47,6 +48,16 @@ namespace OwnerCars.Controllers
         }
 
         [HttpPost]
+        public IActionResult EditOwner(Owner owner)
+        {
+            context.Entry(owner).State= EntityState.Modified;
+            context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+
+
+        [HttpPost]
         public IActionResult Create(Owner owner)
         {
 
@@ -60,6 +71,17 @@ namespace OwnerCars.Controllers
             }
             return View(owner);
         }
+
+        public ActionResult Delete(int id)
+        {
+            Owner owner = context.Owners.Find(id);
+            if (owner != null)
+            {
+                context.Remove(owner);
+                context.SaveChanges();
+            }
+            return RedirectToAction("Views");
+        }       
 
     }
 }
