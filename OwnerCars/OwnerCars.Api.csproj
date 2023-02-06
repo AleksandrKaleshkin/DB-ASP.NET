@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OwnerCars.DataBase\OwnerCars.DataBase.csproj" />
+    <ProjectReference Include="..\OwnerCars.Core\OwnerCars.Core.csproj" />
   </ItemGroup>
 
 </Project>

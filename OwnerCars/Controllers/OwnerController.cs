@@ -1,23 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OwnerCars.Data;
+using OwnerCars.DataBase.Repositories;
 using OwnerCars.Models;
+
+
 
 namespace OwnerCars.Controllers
 {
     public class OwnerController : Controller
     {
-        private readonly CarDealershipsContext context;
-
+        OwnerRepository ownerRespository;
         public OwnerController(CarDealershipsContext context)
         {
-            this.context = context;
+            this.ownerRespository = new OwnerRepository(context);
         }
 
 
         public IActionResult Views()
         {
-            return View(context.Owners);
+            return View(ownerRespository.GetOwnerList());
         }
 
 
@@ -27,32 +29,28 @@ namespace OwnerCars.Controllers
         }
 
         [HttpGet]
-        public IActionResult EditOwner(int? id) 
+        public IActionResult EditOwner(int id) 
         {
             if (id == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
-            Owner owner = context.Owners.Find(id);
+             Owner owner = ownerRespository.GetOwner(id);
             if (owner != null)
             {
                 return View(owner);
             }
-            return HttpNotFound();
+            return NotFound();
 
         }
 
-        private IActionResult HttpNotFound()
-        {
-            throw new NotImplementedException();
-        }
+
 
         [HttpPost]
         public IActionResult EditOwner(Owner owner)
         {
-            context.Entry(owner).State= EntityState.Modified;
-            context.SaveChanges();
-            return RedirectToAction("Index");
+            ownerRespository.Update(owner);
+            return RedirectToAction("/Views");
         }
 
 
@@ -62,26 +60,18 @@ namespace OwnerCars.Controllers
         {
 
             if (ModelState.IsValid) {
-                if (owner.Id == default)
-                    context.Entry(owner).State = EntityState.Added;
-                else
-                    context.Entry(owner).State = EntityState.Modified;
-                context.SaveChanges();
-                return Redirect("/Owner/Views");
+                ownerRespository.Add(owner);
             }
-            return View(owner);
+            return Ok(owner);
         }
 
+        [HttpGet]
         public ActionResult Delete(int id)
         {
-            Owner owner = context.Owners.Find(id);
-            if (owner != null)
-            {
-                context.Remove(owner);
-                context.SaveChanges();
-            }
+            ownerRespository.Remove(id);
             return RedirectToAction("Views");
         }       
-
+        
     }
+        
 }

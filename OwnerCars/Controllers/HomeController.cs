@@ -7,18 +7,10 @@ namespace OwnerCars.Controllers
 {
     public class HomeController : Controller
     {
-
-
-        private readonly CarDealershipsContext context;
-
-        public HomeController(CarDealershipsContext context)
-        {
-            this.context = context;
-        }
-
+        [HttpGet]
         public IActionResult Index()
         {
-            return View(context.Owners);
+            return View();
         }
 
     }
