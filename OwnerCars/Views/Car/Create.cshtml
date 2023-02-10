@@ -1,0 +1,32 @@
+﻿@using OwnerCars.DataBase.Models;
+@model Car
+@{
+    ViewData["Title"] = "Автосалон";
+}
+
+<h1>Добавить Автомобиль</h1>
+
+<form method="post" asp-action="Create">
+    <label asp-for="Brand">Марка</label>
+    <input asp-for="Brand" />
+    <span asp-validation-for="Brand"></span>
+
+    <label asp-for="Model">Модель</label>
+    <input asp-for="Model" />
+    <span asp-validation-for="Model"></span>
+
+    <label asp-for="Year">Год выпуска</label>
+    <input asp-for="Year" />
+    <span asp-validation-for="Year"></span>
+
+    <label asp-for="Power">Мощность</label>
+    <input asp-for="Power" />
+    <span asp-validation-for="Power"></span>
+
+    <label asp-for="OwnerId">Владелец</label>
+    <input asp-for="OwnerId" />
+    <span asp-validation-for="OwnerId"></span>
+
+    <input type="submit" value="Добавить" />
+
+</form>

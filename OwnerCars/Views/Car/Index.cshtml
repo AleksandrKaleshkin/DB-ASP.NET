@@ -1,0 +1,36 @@
+﻿
+@model IEnumerable<OwnerCars.DataBase.Models.Car>
+@{
+    ViewData["Title"] = "Автовалон";
+}
+
+<h1>База данных</h1>
+
+<table class="table">
+    <thead>
+        <tr><th>Марка</th><th>Модель</th><th>Год выпуска</th> <th>Мощность</th><th>Владелец</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var car in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(item => car.Brand)</td>
+                <td>@Html.DisplayFor(item => car.Model)</td>
+                <td>@Html.DisplayFor(item => car.Year)</td>
+                <td>@Html.DisplayFor(item => car.Power)</td>
+                <td>@Html.DisplayFor(item => car.Owner.Name)</td>
+                <td>
+                    <form method="get" asp-action="Edit" asp-route-id="@car.Id">
+                        <button>Изменить</button>
+                    </form>
+                </td>
+                <td>
+                    <form method="get" asp-action="Delete" asp-route-id="@car.Id">
+                        <button>Удалить</button>
+                    </form>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

@@ -58,10 +58,7 @@ namespace OwnerCars.Controllers
         [HttpPost]
         public IActionResult Create(Owner owner)
         {
-
-            if (ModelState.IsValid) {
-                ownerRespository.Add(owner);
-            }
+                ownerRespository.Add(owner);            
             return Ok(owner);
         }
 

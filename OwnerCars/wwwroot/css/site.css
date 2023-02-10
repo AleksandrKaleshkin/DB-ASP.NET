@@ -19,16 +19,18 @@ header {
     color:white;
 }
 
-header nav a{
-    color:white;
-    text-decoration:none;
-    margin-left: 15px;
 
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 15px;
 }
 
-header.logo{
-    font-weight:600;
-    font-size:25px;
+
+header.logo {
+    font-weight: 600;
+    font-size: 25px;
 }
 main{
     width: 80%;

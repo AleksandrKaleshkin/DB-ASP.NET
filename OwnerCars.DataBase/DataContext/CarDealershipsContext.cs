@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OwnerCars.DataBase.Models;
 using OwnerCars.Models;
 
 namespace OwnerCars.Data
@@ -6,10 +7,15 @@ namespace OwnerCars.Data
     public class CarDealershipsContext : DbContext
     {
         public DbSet<Owner> Owners { get; set; }
+        public DbSet<Car> Cars { get; set; }
 
-        public CarDealershipsContext (DbContextOptions options): base(options){
-        Database.EnsureCreated();
+        public CarDealershipsContext(DbContextOptions options) : base(options)
+        {
+
+            
         }
+
+
 
 
 

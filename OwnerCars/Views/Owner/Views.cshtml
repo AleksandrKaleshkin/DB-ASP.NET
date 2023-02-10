@@ -17,11 +17,12 @@
                     <td>@owner.SurName</td>
                     <td>@owner.Age</td>
                     <td>@owner.Email</td>
-                    <td><form method="get" asp-action="EditOwner" >
+                <td>
+                    <form asp-controller="Owner" method="get" asp-action="EditOwner" asp-route-id="@owner.Id">
                     <button>Изменить</button>
                     </form></td>
                     <td>
-                    <form method="get" asp-action="Delete">
+                    <form method="get" asp-action="Delete" asp-route-id="@owner.Id">
                         <button>Удалить</button>
                     </form>
                     </td>

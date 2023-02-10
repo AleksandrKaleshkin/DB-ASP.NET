@@ -27,6 +27,7 @@ namespace OwnerCars.DataBase.Repositories
 
         public void Add(Owner owner)
         {
+ 
             db.Owners.Add(owner);
             db.SaveChanges();
         }

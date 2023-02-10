@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Автосалон";
+}
+@model OwnerCars.DataBase.Models.Car
+
+<h1>Редактировать владельца</h1>
+
+@using (Html.BeginForm("Edit", "Car", FormMethod.Post))
+{
+    <fieldset>
+        @Html.HiddenFor(m => m.Id)
+        <p>
+            @Html.LabelFor(m => m.Brand, "Марка")
+            <br />
+            @Html.EditorFor(m => m.Brand)
+        </p>
+        <p>
+            @Html.LabelFor(m => m.Model, "Модель")
+            <br />
+            @Html.EditorFor(m => m.Model)
+ 
+        </p>
+        <p>
+            @Html.LabelFor(m => m.Year, "Год выпуска")
+            <br />
+            @Html.EditorFor(m => m.Year)
+        </p>
+        <p>
+            @Html.LabelFor(m => m.Power, "Мощность")
+            <br />
+            @Html.EditorFor(m => m.Power)
+        </p>
+        <p>
+            @Html.LabelFor(m => m.OwnerId, "Владелец")
+            <br />
+            @Html.EditorFor(m => m.OwnerId)
+        </p>
+
+        <p><input type="submit" value="Изменить" /></p>
+    </fieldset>
+}
