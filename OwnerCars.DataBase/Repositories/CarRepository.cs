@@ -9,15 +9,60 @@ namespace OwnerCars.DataBase.Repositories
     public class CarRepository
     {
         private CarDealershipsContext db;
+        static SortStateCar sortcar;
 
         public CarRepository(CarDealershipsContext db)
         {
             this.db = db;
         }
 
+        public SortStateCar Sort(string state)
+        {
+            switch (state)
+            {
+                case "BrandSort":
+                    sortcar = sortcar == SortStateCar.BrandAsc ? SortStateCar.BrandDesc : SortStateCar.BrandAsc;
+                    break;
+                case "ModelSort":
+                    sortcar = sortcar == SortStateCar.ModelAsc ? SortStateCar.ModelDesc : SortStateCar.ModelAsc;
+                    break;
+                case "YearSort":
+                    sortcar = sortcar == SortStateCar.YearAsc ? SortStateCar.YearDesc : SortStateCar.YearAsc;
+                    break;
+                case "PowerSort":
+                    sortcar = sortcar == SortStateCar.PowerAsc ? SortStateCar.PowerDesc : SortStateCar.PowerAsc;
+                    break;
+                case "OwnerSort":
+                    sortcar = sortcar == SortStateCar.OwnerAsc ? SortStateCar.OwnerDesc : SortStateCar.OwnerAsc;
+                    break;
+                default:
+                    sortcar = SortStateCar.BrandAsc;
+                    break;
+            }
+            return sortcar;
+        }
+
+
         public IEnumerable<Car> GetOwnerList()
         {
-            return db.Cars.ToList();
+            IQueryable<Car?> cars = db.Cars;
+
+            cars = sortcar switch
+            {
+
+                    SortStateCar.BrandDesc => cars.OrderByDescending(x=> x.Brand),
+                    SortStateCar.ModelAsc => cars.OrderBy(x=> x.Model),
+                    SortStateCar.ModelDesc => cars.OrderByDescending(x=> x.Model),
+                    SortStateCar.YearAsc => cars.OrderBy(x=> x.Year),
+                    SortStateCar.YearDesc => cars.OrderByDescending(x=> x.Year),
+                    SortStateCar.PowerAsc => cars.OrderBy(x=> x.Power),
+                    SortStateCar.PowerDesc => cars.OrderByDescending(x=> x.Power),
+                    SortStateCar.OwnerAsc => cars.OrderBy(x=> x.Owner.Name),
+                    SortStateCar.OwnerDesc => cars.OrderByDescending(x => x.Owner.Name),
+                    _ => cars.OrderBy(x => x.Brand)
+
+            };
+            return cars.Include(x => x.Owner).ToList();
         }
 
         public Car GetCar(int id)

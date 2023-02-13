@@ -8,7 +8,13 @@
 
 <table class="table">
     <thead>
-        <tr><th>Марка</th><th>Модель</th><th>Год выпуска</th> <th>Мощность</th><th>Владелец</th></tr>
+        <tr>
+            <th><a asp-action="Index" asp-route-stateOrder="BrandSort">Марка</a></th>
+            <th><a asp-action="Index" asp-route-stateOrder="ModelSort">Модель</a></th>
+            <th><a asp-action="Index" asp-route-stateOrder="YearSort">Год выпуска</a></th>
+            <th><a asp-action="Index" asp-route-stateOrder="PowerSort">Мощность</a></th>
+            <th><a asp-action="Index" asp-route-stateOrder="OwnerSort">Владелец</a></th>
+        </tr>
     </thead>
     <tbody>
         @foreach (var car in Model)

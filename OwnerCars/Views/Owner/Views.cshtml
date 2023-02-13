@@ -7,7 +7,11 @@
 
 <table class="table">
     <thead>
-        <tr><th>Имя</th><th>Фамилия</th><th>Возраст</th> <th>Email</th></tr>
+        <tr>
+            <th><a asp-action="Views" asp-route-stateOrder="NameSort">Имя</a></th>
+            <th><a asp-action="Views" asp-route-stateOrder="SurNameSort">Фамилия</a></th>
+            <th><a asp-action="Views" asp-route-stateOrder="AgeSort">Возраст</a></th>
+            <th>Email</th></tr>
     </thead>
     <tbody>        
         @foreach (var owner in Model)

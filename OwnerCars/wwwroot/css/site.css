@@ -20,6 +20,15 @@ header {
 }
 
 
+button {
+    background: #14151a;
+    color: wheat;
+    border: none;
+    min-height: 30px;
+    min-width: 120px;
+    font-family: Intro;
+    border-radius: 20px;
+}
 
 nav a {
     color: white;
@@ -43,16 +52,22 @@ main{
 
 table {
     margin-top: 30px;
-
     text-align: center
 }
 
+a{
+    text-decoration: none;
 
+}
  
 td {
     padding: 10px;
-    padding-left: 10px;
+    padding-left: 30px;
 
+}
+
+th {
+    padding-left: 20px;
 }
 
 main label {

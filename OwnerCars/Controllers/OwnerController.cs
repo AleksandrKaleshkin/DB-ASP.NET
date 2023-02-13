@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OwnerCars.Data;
+using OwnerCars.DataBase.Models;
 using OwnerCars.DataBase.Repositories;
 using OwnerCars.Models;
 
@@ -17,8 +19,23 @@ namespace OwnerCars.Controllers
         }
 
 
-        public IActionResult Views()
+        public IActionResult Views(string stateOrder)
         {
+            switch (stateOrder)
+            {
+                case "NameSort":
+                    ownerRespository.Sort("NameSort");
+                    break;
+
+                case "SurNameSort":
+                    ownerRespository.Sort("SurNameSort");
+                break;
+
+                case "AgeSort":
+                    ownerRespository.Sort("AgeSort");
+                break;
+            }
+
             return View(ownerRespository.GetOwnerList());
         }
 
@@ -58,8 +75,8 @@ namespace OwnerCars.Controllers
         [HttpPost]
         public IActionResult Create(Owner owner)
         {
-                ownerRespository.Add(owner);            
-            return Ok(owner);
+                ownerRespository.Add(owner);
+            return RedirectToAction("Views");
         }
 
         [HttpGet]

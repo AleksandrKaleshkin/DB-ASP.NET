@@ -18,8 +18,27 @@ namespace OwnerCars.Api.Controllers
 
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string stateOrder)
         {
+            switch (stateOrder)
+            {
+                case "BrandSort":
+                    carRespository.Sort("BrandSort");
+                    break;
+                case "ModelSort":
+                    carRespository.Sort("ModelSort");
+                    break;
+                case "YearSort":
+                    carRespository.Sort("YearSort");
+                    break;
+                case "PowerSort":
+                    carRespository.Sort("PowerSort");
+                    break;
+                case "OwnerSort":
+                    carRespository.Sort("OwnerSort");
+                    break;
+            }
+
             return View(carRespository.GetOwnerList());
         }
 
