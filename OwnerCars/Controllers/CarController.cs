@@ -18,7 +18,7 @@ namespace OwnerCars.Api.Controllers
 
 
         [HttpGet]
-        public IActionResult Index(string stateOrder)
+        public IActionResult Index(string stateOrder, int page =1)
         {
             switch (stateOrder)
             {
@@ -39,7 +39,7 @@ namespace OwnerCars.Api.Controllers
                     break;
             }
 
-            return View(carRespository.GetOwnerList());
+            return View(carRespository.GetOwnerList(page));
         }
 
         [HttpGet]

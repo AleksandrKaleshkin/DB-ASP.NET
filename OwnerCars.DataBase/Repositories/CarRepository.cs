@@ -43,26 +43,41 @@ namespace OwnerCars.DataBase.Repositories
         }
 
 
-        public IEnumerable<Car> GetOwnerList()
+        public CarViewModel GetOwnerList(int page =1)
         {
-            IQueryable<Car?> cars = db.Cars;
+
+            int pageSize = 4;
+            IEnumerable<Car> cars = db.Cars.Include(x=> x.Owner);
 
             cars = sortcar switch
             {
 
-                    SortStateCar.BrandDesc => cars.OrderByDescending(x=> x.Brand),
-                    SortStateCar.ModelAsc => cars.OrderBy(x=> x.Model),
-                    SortStateCar.ModelDesc => cars.OrderByDescending(x=> x.Model),
-                    SortStateCar.YearAsc => cars.OrderBy(x=> x.Year),
-                    SortStateCar.YearDesc => cars.OrderByDescending(x=> x.Year),
-                    SortStateCar.PowerAsc => cars.OrderBy(x=> x.Power),
-                    SortStateCar.PowerDesc => cars.OrderByDescending(x=> x.Power),
-                    SortStateCar.OwnerAsc => cars.OrderBy(x=> x.Owner.Name),
-                    SortStateCar.OwnerDesc => cars.OrderByDescending(x => x.Owner.Name),
-                    _ => cars.OrderBy(x => x.Brand)
-
+                SortStateCar.BrandDesc => cars.OrderByDescending(x => x.Brand),
+                SortStateCar.ModelAsc => cars.OrderBy(x => x.Model),
+                SortStateCar.ModelDesc => cars.OrderByDescending(x => x.Model),
+                SortStateCar.YearAsc => cars.OrderBy(x => x.Year),
+                SortStateCar.YearDesc => cars.OrderByDescending(x => x.Year),
+                SortStateCar.PowerAsc => cars.OrderBy(x => x.Power),
+                SortStateCar.PowerDesc => cars.OrderByDescending(x => x.Power),
+                SortStateCar.OwnerAsc => cars.OrderBy(x => x.Owner.Name),
+                SortStateCar.OwnerDesc => cars.OrderByDescending(x => x.Owner.Name),
+                _ => cars.OrderBy(x => x.Brand)
             };
-            return cars.Include(x => x.Owner).ToList();
+
+            var count = cars.Count();
+            IEnumerable<Car> items = cars.Skip((page-1)*pageSize).Take(pageSize).ToList();
+
+            PageViewModel pageView = new PageViewModel (count, page, pageSize);
+
+
+
+            CarViewModel viewModel = new CarViewModel
+            {
+                PageViewModel = pageView,
+                Cars = items
+            };
+
+            return viewModel;
         }
 
         public Car GetCar(int id)

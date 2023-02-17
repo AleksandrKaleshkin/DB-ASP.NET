@@ -42,10 +42,10 @@ namespace OwnerCars.DataBase.Repositories
         }
     
 
-    public IEnumerable<Owner> GetOwnerList()
+    public OwnerViewModel GetOwnerList(int page =1)
         {
-            IQueryable<Owner> owners = db.Owners;
-
+            int pageSize = 4;
+            IEnumerable<Owner> owners = db.Owners;
             owners = sortowner switch
             {
                 SortStateOwner.NameDesc => owners.OrderByDescending(x => x.Name),
@@ -53,10 +53,22 @@ namespace OwnerCars.DataBase.Repositories
                 SortStateOwner.AgeDesc => owners.OrderByDescending(x => x.Age),
                 SortStateOwner.SurNameAsc => owners.OrderBy(x => x.SurName),
                 SortStateOwner.SurNameDesc => owners.OrderByDescending(x => x.SurName),
-                _ => owners.OrderBy(x=> x.Name)
+                _ => owners.OrderBy(x => x.Name)
+            };
+            var count = owners.Count();
+            IEnumerable<Owner> items = owners.Skip((page-1)*pageSize).Take(pageSize).ToList();
+
+            PageViewModel pageView = new PageViewModel(count, page, pageSize);
+
+
+
+            OwnerViewModel ownerView = new OwnerViewModel
+            {
+                PageViewModel = pageView,
+                owners = items
             };
 
-            return owners.AsNoTracking().ToList();
+            return ownerView;
         }
 
         public Owner GetOwner(int id)

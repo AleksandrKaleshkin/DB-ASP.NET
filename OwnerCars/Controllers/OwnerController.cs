@@ -19,7 +19,7 @@ namespace OwnerCars.Controllers
         }
 
 
-        public IActionResult Views(string stateOrder)
+        public IActionResult Views(string stateOrder, int page=1)
         {
             switch (stateOrder)
             {
@@ -36,7 +36,7 @@ namespace OwnerCars.Controllers
                 break;
             }
 
-            return View(ownerRespository.GetOwnerList());
+            return View(ownerRespository.GetOwnerList(page));
         }
 
 

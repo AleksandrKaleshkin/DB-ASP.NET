@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<OwnerCars.DataBase.Models.Car>
+@model OwnerCars.DataBase.Models.CarViewModel
 @{
     ViewData["Title"] = "Автовалон";
 }
@@ -17,7 +17,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var car in Model)
+        @foreach (var car in Model.Cars)
         {
             <tr>
                 <td>@Html.DisplayFor(item => car.Brand)</td>
@@ -40,3 +40,21 @@
         }
     </tbody>
 </table>
+    @if (Model.PageViewModel.HasPreviousPage)
+    {
+        <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+       class="btn btn-outline-dark">
+            Назад
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            
+        </a>
+    }
+    @if (Model.PageViewModel.HasNextPage)
+    {
+        <a asp-action="Index"
+        asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+       class="btn btn-outline-dark">
+       Вперед
+        </a>
+    }
