@@ -5,6 +5,7 @@ using OwnerCars.Data;
 using OwnerCars.DataBase.Models;
 using OwnerCars.Models;
 using System.Security.Cryptography.X509Certificates;
+using System.Xml.Linq;
 
 namespace OwnerCars.DataBase.Repositories
 {
@@ -42,10 +43,24 @@ namespace OwnerCars.DataBase.Repositories
         }
     
 
-    public OwnerViewModel GetOwnerList(int page =1)
+    public OwnerViewModel GetOwnerList(string? name, string? surname,int? age, int page =1)
         {
             int pageSize = 4;
             IEnumerable<Owner> owners = db.Owners;
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                owners = owners.Where(p => p.Name.ToLower()!.Contains(name.ToLower()));
+            }
+            if (!string.IsNullOrEmpty(surname))
+            {
+                owners = owners.Where(p => p.SurName.ToLower()!.Contains(surname.ToLower()));
+            }
+            if (age!=null && age>=1)
+            {
+                owners = owners.Where(p => p.Age == age);
+            }
+
             owners = sortowner switch
             {
                 SortStateOwner.NameDesc => owners.OrderByDescending(x => x.Name),
@@ -65,7 +80,10 @@ namespace OwnerCars.DataBase.Repositories
             OwnerViewModel ownerView = new OwnerViewModel
             {
                 PageViewModel = pageView,
-                owners = items
+                owners = items,
+                Age= age,
+                Name= name,
+                SurName= surname
             };
 
             return ownerView;

@@ -1,5 +1,6 @@
-﻿
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal;
 using OwnerCars.Data;
 using OwnerCars.DataBase.Models;
 using OwnerCars.Models;
@@ -43,11 +44,20 @@ namespace OwnerCars.DataBase.Repositories
         }
 
 
-        public CarViewModel GetOwnerList(int page =1)
+        public CarViewModel GetOwnerList(int? owner, string? brand, int page =1)
         {
-
             int pageSize = 4;
             IEnumerable<Car> cars = db.Cars.Include(x=> x.Owner);
+
+            if (owner!=null && owner!=0)
+            {
+                cars = cars.Where(p => p.OwnerId == owner);
+            }
+            if (!string.IsNullOrEmpty(brand))
+            {
+
+                cars = cars.Where(p => p.Brand.ToLower()!.Contains(brand.ToLower()));
+            }
 
             cars = sortcar switch
             {
@@ -64,8 +74,12 @@ namespace OwnerCars.DataBase.Repositories
                 _ => cars.OrderBy(x => x.Brand)
             };
 
+            List<Owner> owners = db.Owners.ToList();
+            owners.Insert(0, new Owner { Name="Все", Id =0 });
+
             var count = cars.Count();
             IEnumerable<Car> items = cars.Skip((page-1)*pageSize).Take(pageSize).ToList();
+
 
             PageViewModel pageView = new PageViewModel (count, page, pageSize);
 
@@ -74,7 +88,10 @@ namespace OwnerCars.DataBase.Repositories
             CarViewModel viewModel = new CarViewModel
             {
                 PageViewModel = pageView,
-                Cars = items
+                Cars = items,
+                Owners = new SelectList(owners, "Id", "Name", owner),
+                Brand = brand
+                
             };
 
             return viewModel;

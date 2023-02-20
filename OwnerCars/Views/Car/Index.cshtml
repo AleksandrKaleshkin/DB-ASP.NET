@@ -1,10 +1,19 @@
-﻿
-@model OwnerCars.DataBase.Models.CarViewModel
+﻿@model OwnerCars.DataBase.Models.CarViewModel
 @{
     ViewData["Title"] = "Автовалон";
 }
 
 <h1>База данных</h1>
+<form method="get">
+    <div>
+        <label>Марка:</label>
+        <input asp-for="Brand" class="inputbrand" />
+        <label>Компания:</label>
+        <select name="owner" asp-items="Model.Owners"></select>
+        <input type="submit" value="Фильтр" />
+    </div>
+</form>
+
 
 <table class="table">
     <thead>

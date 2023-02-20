@@ -6,6 +6,21 @@
 
 <h1>База данных</h1>
 
+<form method="get">
+    <div>
+        <label>Имя:</label>
+        <input asp-for="Name" class="inputname" />
+
+        <label>Фамилия:</label>
+        <input asp-for="SurName" class="inputsurname" />
+
+        <label>Возраст:</label>
+        <input asp-for="Age" class="inputage" />
+
+        <input type="submit" value="Фильтр" />
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
