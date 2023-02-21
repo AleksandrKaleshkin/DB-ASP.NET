@@ -1,5 +1,4 @@
-﻿using OwnerCars.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 
 namespace OwnerCars.DataBase.Models

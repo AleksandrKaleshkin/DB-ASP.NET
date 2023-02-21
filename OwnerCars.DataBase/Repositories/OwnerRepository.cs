@@ -1,11 +1,8 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OwnerCars.Data;
 using OwnerCars.DataBase.Models;
-using OwnerCars.Models;
-using System.Security.Cryptography.X509Certificates;
-using System.Xml.Linq;
+
 
 namespace OwnerCars.DataBase.Repositories
 {
@@ -21,31 +18,12 @@ namespace OwnerCars.DataBase.Repositories
 
 
 
-        public SortStateOwner Sort(string state)
-        {
-            switch (state)
-            {
-                case "NameSort":
-                     sortowner = sortowner == SortStateOwner.NameAsc ? SortStateOwner.NameDesc : SortStateOwner.NameAsc;
-                break;
-                case "SurNameSort":
-                    sortowner = sortowner == SortStateOwner.SurNameAsc ? SortStateOwner.SurNameDesc : SortStateOwner.SurNameAsc;
-                break;
-
-                case "AgeSort":
-                    sortowner = sortowner == SortStateOwner.AgeAsc ? SortStateOwner.AgeDesc : SortStateOwner.AgeAsc;
-                    break;
-                default:
-                    sortowner = SortStateOwner.NameAsc;
-                break;
-            }
-            return sortowner;
-        }
     
 
-    public OwnerViewModel GetOwnerList(string? name, string? surname,int? age, int page =1)
+    public OwnerViewModel GetOwnerList(string? name, string? surname,int age, int page =1 , SortStateOwner sortState = SortStateOwner.NameAsc)
         {
             int pageSize = 4;
+
             IEnumerable<Owner> owners = db.Owners;
 
             if (!string.IsNullOrEmpty(name))
@@ -61,29 +39,39 @@ namespace OwnerCars.DataBase.Repositories
                 owners = owners.Where(p => p.Age == age);
             }
 
-            owners = sortowner switch
+            switch (sortState)
             {
-                SortStateOwner.NameDesc => owners.OrderByDescending(x => x.Name),
-                SortStateOwner.AgeAsc => owners.OrderBy(x => x.Age),
-                SortStateOwner.AgeDesc => owners.OrderByDescending(x => x.Age),
-                SortStateOwner.SurNameAsc => owners.OrderBy(x => x.SurName),
-                SortStateOwner.SurNameDesc => owners.OrderByDescending(x => x.SurName),
-                _ => owners.OrderBy(x => x.Name)
-            };
+                case SortStateOwner.NameDesc:
+                    owners = owners.OrderByDescending(x => x.Name);
+                    break;
+                case SortStateOwner.SurNameAsc:
+                    owners = owners.OrderBy(x => x.SurName);
+                    break;
+                case SortStateOwner.SurNameDesc:
+                    owners = owners.OrderByDescending(x => x.SurName);
+                    break;
+                case SortStateOwner.AgeAsc:
+                    owners = owners.OrderBy(x => x.Age);
+                    break;
+                case SortStateOwner.AgeDesc:
+                    owners = owners.OrderByDescending(x => x.Age);
+                    break;
+                default:
+                    owners = owners.OrderBy(x => x.Name);
+                    break;
+            }
+
+
             var count = owners.Count();
             IEnumerable<Owner> items = owners.Skip((page-1)*pageSize).Take(pageSize).ToList();
-
-            PageViewModel pageView = new PageViewModel(count, page, pageSize);
-
 
 
             OwnerViewModel ownerView = new OwnerViewModel
             {
-                PageViewModel = pageView,
-                owners = items,
-                Age= age,
-                Name= name,
-                SurName= surname
+                owners= items,
+                PageViewModel = new PageViewModel(count, page, pageSize),
+                SortViewModel = new SortOwnerViewModel(sortState),
+                FilterViewModel = new FilterOwnerViewModel(name,surname,age)
             };
 
             return ownerView;

@@ -19,14 +19,10 @@ namespace OwnerCars.Controllers
         }
 
 
-        public IActionResult Views(string? name, string? surname, int? age, string stateOrder, int page=1)
+        public IActionResult Views(string? name, string? surname, int age, SortStateOwner stateOrder, int page=1)
         {
-            if (stateOrder!=null)
-            {
-                ownerRespository.Sort(stateOrder);
-            }
 
-            return View(ownerRespository.GetOwnerList(name, surname, age, page));
+            return View(ownerRespository.GetOwnerList(name, surname, age, page, stateOrder));
         }
 
 

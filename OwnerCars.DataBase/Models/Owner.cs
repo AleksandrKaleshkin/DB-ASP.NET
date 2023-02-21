@@ -1,7 +1,6 @@
-﻿using OwnerCars.DataBase.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace OwnerCars.Models
+namespace OwnerCars.DataBase.Models
 {
     public class Owner
     {

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal;
 using OwnerCars.Data;
 using OwnerCars.DataBase.Models;
-using OwnerCars.Models;
+
 
 namespace OwnerCars.DataBase.Repositories
 {
@@ -17,34 +17,9 @@ namespace OwnerCars.DataBase.Repositories
             this.db = db;
         }
 
-        public SortStateCar Sort(string state)
-        {
-            switch (state)
-            {
-                case "BrandSort":
-                    sortcar = sortcar == SortStateCar.BrandAsc ? SortStateCar.BrandDesc : SortStateCar.BrandAsc;
-                    break;
-                case "ModelSort":
-                    sortcar = sortcar == SortStateCar.ModelAsc ? SortStateCar.ModelDesc : SortStateCar.ModelAsc;
-                    break;
-                case "YearSort":
-                    sortcar = sortcar == SortStateCar.YearAsc ? SortStateCar.YearDesc : SortStateCar.YearAsc;
-                    break;
-                case "PowerSort":
-                    sortcar = sortcar == SortStateCar.PowerAsc ? SortStateCar.PowerDesc : SortStateCar.PowerAsc;
-                    break;
-                case "OwnerSort":
-                    sortcar = sortcar == SortStateCar.OwnerAsc ? SortStateCar.OwnerDesc : SortStateCar.OwnerAsc;
-                    break;
-                default:
-                    sortcar = SortStateCar.BrandAsc;
-                    break;
-            }
-            return sortcar;
-        }
 
 
-        public CarViewModel GetOwnerList(int? owner, string? brand, int page =1)
+        public CarViewModel GetOwnerList(int? owner, string? brand, SortStateCar sortState, int page =1)
         {
             int pageSize = 4;
             IEnumerable<Car> cars = db.Cars.Include(x=> x.Owner);
@@ -59,39 +34,49 @@ namespace OwnerCars.DataBase.Repositories
                 cars = cars.Where(p => p.Brand.ToLower()!.Contains(brand.ToLower()));
             }
 
-            cars = sortcar switch
+            switch (sortState)
             {
-
-                SortStateCar.BrandDesc => cars.OrderByDescending(x => x.Brand),
-                SortStateCar.ModelAsc => cars.OrderBy(x => x.Model),
-                SortStateCar.ModelDesc => cars.OrderByDescending(x => x.Model),
-                SortStateCar.YearAsc => cars.OrderBy(x => x.Year),
-                SortStateCar.YearDesc => cars.OrderByDescending(x => x.Year),
-                SortStateCar.PowerAsc => cars.OrderBy(x => x.Power),
-                SortStateCar.PowerDesc => cars.OrderByDescending(x => x.Power),
-                SortStateCar.OwnerAsc => cars.OrderBy(x => x.Owner.Name),
-                SortStateCar.OwnerDesc => cars.OrderByDescending(x => x.Owner.Name),
-                _ => cars.OrderBy(x => x.Brand)
-            };
-
-            List<Owner> owners = db.Owners.ToList();
-            owners.Insert(0, new Owner { Name="Все", Id =0 });
+                case SortStateCar.BrandDesc:
+                    cars = cars.OrderByDescending(x => x.Brand);
+                    break;
+                case SortStateCar.ModelAsc:
+                    cars = cars.OrderBy(x => x.Model);
+                    break;
+                case SortStateCar.ModelDesc:
+                    cars = cars.OrderByDescending(x => x.Model);
+                    break;
+                case SortStateCar.YearAsc:
+                    cars = cars.OrderBy(x => x.Year);
+                    break;
+                case SortStateCar.YearDesc:
+                    cars = cars.OrderByDescending(x => x.Year);
+                    break;
+                case SortStateCar.PowerAsc:
+                    cars = cars.OrderBy(x => x.Power);
+                    break;
+                case SortStateCar.PowerDesc:
+                    cars = cars.OrderByDescending(x => x.Power);
+                    break;
+                case SortStateCar.OwnerAsc:
+                    cars = cars.OrderBy(x => x.Owner.Name);
+                    break;
+                case SortStateCar.OwnerDesc:
+                    cars = cars.OrderByDescending(x => x.Owner.Name);
+                    break;
+                default:
+                    cars = cars.OrderBy(x => x.Brand);
+                    break;
+            }
 
             var count = cars.Count();
             IEnumerable<Car> items = cars.Skip((page-1)*pageSize).Take(pageSize).ToList();
 
-
-            PageViewModel pageView = new PageViewModel (count, page, pageSize);
-
-
-
             CarViewModel viewModel = new CarViewModel
             {
-                PageViewModel = pageView,
-                Cars = items,
-                Owners = new SelectList(owners, "Id", "Name", owner),
-                Brand = brand
-                
+                PageViewModel = new PageViewModel(count, page, pageSize),
+                FilterViewModel = new FilterCarViewModel(db.Owners.ToList(), brand, owner),
+                SortViewModel = new SortCarViewModel(sortState),
+                Cars= items                   
             };
 
             return viewModel;

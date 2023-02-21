@@ -9,13 +9,13 @@
 <form method="get">
     <div>
         <label>Имя:</label>
-        <input asp-for="Name" class="inputname" />
+        <input name="name" value="@Model.FilterViewModel.SelectedName" class="inputname" />
 
         <label>Фамилия:</label>
-        <input asp-for="SurName" class="inputsurname" />
+        <input name="surname" value="@Model.FilterViewModel.SelectedSurName" class="inputsurname" />
 
         <label>Возраст:</label>
-        <input asp-for="Age" class="inputage" />
+        <input name="age" value="@Model.FilterViewModel.SelectedAge" class="inputage" />
 
         <input type="submit" value="Фильтр" />
     </div>
@@ -24,9 +24,27 @@
 <table class="table">
     <thead>
         <tr>
-            <th><a asp-action="Views" asp-route-stateOrder="NameSort">Имя</a></th>
-            <th><a asp-action="Views" asp-route-stateOrder="SurNameSort">Фамилия</a></th>
-            <th><a asp-action="Views" asp-route-stateOrder="AgeSort">Возраст</a></th>
+            <th>
+                <a asp-action="Views"
+                asp-route-stateOrder="@(Model.SortViewModel.NameSort)"
+                asp-route-name="@(Model.FilterViewModel.SelectedName)"
+                asp-route-surname="@(Model.FilterViewModel.SelectedSurName)"
+                asp-route-age="@(Model.FilterViewModel.SelectedAge)">Имя</a>
+            </th>
+            <th>
+                <a asp-action="Views"
+                asp-route-stateOrder="@(Model.SortViewModel.SurNameSort)"
+                asp-route-name="@(Model.FilterViewModel.SelectedName)"
+                asp-route-surname="@(Model.FilterViewModel.SelectedSurName)"
+                asp-route-age="@(Model.FilterViewModel.SelectedAge)">Фамилия</a>
+            </th>
+            <th>
+                <a asp-action="Views"
+                   asp-route-stateOrder="@(Model.SortViewModel.AgeSort)"
+                   asp-route-name="@(Model.FilterViewModel.SelectedName)"
+                   asp-route-surname="@(Model.FilterViewModel.SelectedSurName)"
+                   asp-route-age="@(Model.FilterViewModel.SelectedAge)">Возраст</a>
+            </th>
             <th>Email</th></tr>
     </thead>
     <tbody>        
@@ -55,6 +73,10 @@
 {
             <a asp-action="Views"
        asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+       asp-route-stateOrder="@(Model.SortViewModel.Current)"
+       asp-route-name="@(Model.FilterViewModel.SelectedName)"
+       asp-route-surname="@(Model.FilterViewModel.SelectedSurName)"
+       asp-route-age="@(Model.FilterViewModel.SelectedAge)"
        class="btn btn-outline-dark">
                 Назад
                 <i class="glyphicon glyphicon-chevron-left"></i>
@@ -65,6 +87,10 @@
 {
             <a asp-action="Views"
         asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+        asp-route-stateOrder="@(Model.SortViewModel.Current)"
+        asp-route-name="@(Model.FilterViewModel.SelectedName)"
+        asp-route-surname="@(Model.FilterViewModel.SelectedSurName)"
+        asp-route-age="@(Model.FilterViewModel.SelectedAge)"
        class="btn btn-outline-dark">
            Вперед
             </a>

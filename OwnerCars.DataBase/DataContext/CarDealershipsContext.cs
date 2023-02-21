@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OwnerCars.DataBase.Models;
-using OwnerCars.Models;
+
 
 namespace OwnerCars.Data
 {

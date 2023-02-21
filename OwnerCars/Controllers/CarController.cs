@@ -18,14 +18,10 @@ namespace OwnerCars.Api.Controllers
 
 
         [HttpGet]
-        public IActionResult Index(int? owner, string? brand, string stateOrder, int page =1)
+        public IActionResult Index(int? owner, string? brand, SortStateCar stateOrder = SortStateCar.BrandAsc, int page =1)
         {
-            if (stateOrder!=null)
-            {
-                carRespository.Sort(stateOrder);
-            }
 
-            return View(carRespository.GetOwnerList(owner, brand, page));
+            return View(carRespository.GetOwnerList(owner, brand, stateOrder, page));
         }
 
         [HttpGet]
@@ -41,11 +37,14 @@ namespace OwnerCars.Api.Controllers
             return RedirectToAction("Index");
         }
 
+
+
         [HttpGet]
         public IActionResult Delete(int id)
         {
             carRespository.Remove(id);
             return RedirectToAction("Index");
+
         }
 
         [HttpGet]
