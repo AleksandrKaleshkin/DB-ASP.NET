@@ -2,15 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal;
 using OwnerCars.Data;
+using OwnerCars.DataBase.Interfaces;
 using OwnerCars.DataBase.Models;
-
 
 namespace OwnerCars.DataBase.Repositories
 {
-    public class CarRepository
+    public class CarRepository: IRepository<Car>
     {
         private CarDealershipsContext db;
-        static SortStateCar sortcar;
 
         public CarRepository(CarDealershipsContext db)
         {
@@ -18,7 +17,7 @@ namespace OwnerCars.DataBase.Repositories
         }
 
 
-
+/*
         public CarViewModel GetOwnerList(int? owner, string? brand, SortStateCar sortState, int page =1)
         {
             int pageSize = 4;
@@ -81,8 +80,14 @@ namespace OwnerCars.DataBase.Repositories
 
             return viewModel;
         }
+*/
 
-        public Car GetCar(int id)
+        public IEnumerable<Car> GetAll()
+        {
+            return db.Cars.Include(o=> o.Owner);
+        }
+
+        public Car Get(int id)
         {
             var car = db.Cars.Find(id);
             if (car != null)
@@ -92,32 +97,29 @@ namespace OwnerCars.DataBase.Repositories
             return null;
         }
 
-        public void Add(Car car)
+        public IEnumerable<Car> find(Func<Car, bool> predicate)
         {
-            car.Owner = db.Owners.Find(car.OwnerId);
-            db.Cars.Add(car);
-            db.SaveChanges();
+            return db.Cars.Include(o =>o.Owner).Where(predicate).ToList();
         }
 
-        public void Remove(int id)
+        public void Create(Car item)
         {
-            Car? car = db.Cars.Find(id);
-            if (car != null)
-            {
-                db.Cars.Remove(car);
-                db.SaveChanges();
-            }
-        }
-
-        public void Save()
-        {
-            db.SaveChanges();
+            item.Owner = db.Owners.Find(item.OwnerId);
+            db.Cars.Add(item);
         }
 
         public void Update(Car car)
         {
             db.Entry(car).State = EntityState.Modified;
-            db.SaveChanges();
+        }
+
+        public void Delete(int id)
+        {
+            Car? car = db.Cars.Find(id);
+            if (car != null)
+            {
+                db.Cars.Remove(car);
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ namespace OwnerCars.Controllers
         }
 
         [HttpGet]
-        public IActionResult ViewData()
+        public new IActionResult ViewData()
         {
             return View(); 
         }

@@ -1,4 +1,4 @@
-﻿namespace OwnerCars.DataBase.Models
+﻿namespace OwnerCars.Core.Models
 {
     public class FilterOwnerViewModel
     {
@@ -6,6 +6,7 @@
             SelectedName = name;
             SelectedSurName = surname;
             SelectedAge = age;
+
         }
 
         public string SelectedName { get; set; }

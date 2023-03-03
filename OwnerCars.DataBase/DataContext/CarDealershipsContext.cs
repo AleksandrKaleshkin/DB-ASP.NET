@@ -11,8 +11,7 @@ namespace OwnerCars.Data
 
         public CarDealershipsContext(DbContextOptions options) : base(options)
         {
-
-            
+                       
         }
 
 

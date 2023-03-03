@@ -1,15 +1,15 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using OwnerCars.Data;
+using OwnerCars.DataBase.Interfaces;
 using OwnerCars.DataBase.Models;
-
 
 namespace OwnerCars.DataBase.Repositories
 {
-    public class OwnerRepository
+    public class OwnerRepository: IRepository<Owner>
     {
         private CarDealershipsContext db;
-        static SortStateOwner sortowner;
+        //static SortStateOwner sortowner;
 
         public OwnerRepository(CarDealershipsContext db)
         {
@@ -19,7 +19,7 @@ namespace OwnerCars.DataBase.Repositories
 
 
     
-
+/*
     public OwnerViewModel GetOwnerList(string? name, string? surname,int age, int page =1 , SortStateOwner sortState = SortStateOwner.NameAsc)
         {
             int pageSize = 4;
@@ -77,39 +77,41 @@ namespace OwnerCars.DataBase.Repositories
             return ownerView;
         }
 
-        public Owner GetOwner(int id)
+        */
+
+
+        public IEnumerable<Owner> GetAll()
+        {
+            return db.Owners;
+        }
+
+        public Owner Get(int id)
         {
             return db.Owners.Find(id);
         }
 
-        public void Add(Owner owner)
+        public IEnumerable<Owner> find(Func<Owner, bool> predicate)
         {
- 
-            db.Owners.Add(owner);
-            db.SaveChanges();
+            return db.Owners.Where(predicate).ToList();
         }
 
-        public void Remove(int id) 
+        public void Create(Owner item)
         {
-            Owner owner = db.Owners.Find(id);
-            if (owner != null)
-            {
-            db.Owners.Remove(owner);
-            db.SaveChanges();   
-            }
-        }
-
-        public void Save()
-        {
-            db.SaveChanges();
+            db.Owners.Add(item);
         }
 
         public void Update(Owner owner)
         {
             db.Entry(owner).State = EntityState.Modified;
-            db.SaveChanges();
         }
 
-
+        public void Delete(int id)
+        {
+            Owner owner = db.Owners.Find(id);
+            if (owner != null)
+            {
+                db.Owners.Remove(owner);
+            }
+        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿
-namespace OwnerCars.DataBase.Models
+namespace OwnerCars.Core.Models
 {
     public enum SortStateOwner
     {

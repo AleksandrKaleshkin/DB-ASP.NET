@@ -1,7 +1,8 @@
-﻿@{
+﻿@using OwnerCars.Core.DTO;
+@{
     ViewData["Title"] = "Автосалон";
 }
-@model OwnerCars.DataBase.Models.Car
+@model CarDTO
 
 <h1>Редактировать владельца</h1>
 
@@ -29,7 +30,7 @@
             @Html.LabelFor(m => m.Power, "Мощность")
             <br />
             @Html.EditorFor(m => m.Power)
-        </p>
+        </p>    
         <p>
             @Html.LabelFor(m => m.OwnerId, "Владелец")
             <br />

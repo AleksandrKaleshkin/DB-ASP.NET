@@ -1,4 +1,4 @@
-﻿namespace OwnerCars.DataBase.Models
+﻿namespace OwnerCars.Common.Models
 {
     public class PageViewModel
     {

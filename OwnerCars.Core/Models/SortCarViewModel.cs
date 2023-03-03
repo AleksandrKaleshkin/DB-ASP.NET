@@ -1,4 +1,4 @@
-﻿namespace OwnerCars.DataBase.Models
+﻿namespace OwnerCars.Core.Models
 {
     public class SortCarViewModel
     {

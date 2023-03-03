@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using OwnerCars.Core.Interfaces;
+using OwnerCars.Core.Services;
 using OwnerCars.Data;
+using OwnerCars.DataBase.Interfaces;
+using OwnerCars.DataBase.Repositories;
 
 internal class Program
 {
@@ -8,12 +12,18 @@ internal class Program
         var builder = WebApplication.CreateBuilder(args);
 
         string? connection = builder.Configuration.GetConnectionString("DefaultConnection");
-        builder.Services.AddDbContext<CarDealershipsContext>(options =>options.UseNpgsql(connection));
+        builder.Services.AddTransient<IOwnerService, OwnerService>();
+        builder.Services.AddTransient<ICarService, CarService>();
+        builder.Services.AddTransient<IUnitOfWork, EFUnitOfWork>();
+        builder.Services.AddDbContext<CarDealershipsContext>(options => options.UseNpgsql(connection));
+        
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
 
+
         var app = builder.Build();
+
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
