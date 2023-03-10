@@ -1,4 +1,4 @@
-﻿@model OwnerCars.DataBase.Models.Owner
+﻿@model OwnerCars.Core.DTO.OwnerDTO
 @{
     ViewData["Title"] = "Автосалон";
 }
@@ -22,6 +22,11 @@
     <input asp-for="Email" />
     <span asp-validation-for="Email"></span>
 
-    <input type="submit" value="Добавить" />
+    <div >
+        <input type="submit" value="Добавить" />
+    </div>
+
+
 
 </form>
+

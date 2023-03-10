@@ -95,8 +95,15 @@ namespace OwnerCars.Api.Controllers
         [HttpPost]
         public IActionResult Create(CarDTO car)
         {
-            carService.AddCar(car);
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                carService.AddCar(car);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(car);
+            }
         }
 
 

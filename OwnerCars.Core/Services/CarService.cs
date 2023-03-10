@@ -22,7 +22,7 @@ namespace OwnerCars.Core.Services
 
             if (owner == null)
             {
-                throw new ValidationException("Владелец не найден!", "");
+                throw new ValidationException("Владелец не найден!", "");                
             }
             Car car = new Car
             {

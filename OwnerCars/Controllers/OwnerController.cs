@@ -81,10 +81,6 @@ namespace OwnerCars.Controllers
     
 
 
-        public IActionResult Index()
-        {
-            return View();
-        }
 
         [HttpGet]
         public IActionResult EditOwner(int id)
@@ -111,13 +107,24 @@ namespace OwnerCars.Controllers
             return RedirectToAction("Views");
         }
 
-
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
 
         [HttpPost]
         public IActionResult Create(OwnerDTO owner)
         {
-            ownerService.AddOwner(owner);
-            return RedirectToAction("Views");
+            if (ModelState.IsValid)
+            {
+                ownerService.AddOwner(owner);
+                return RedirectToAction("Views");
+            }
+            else
+            {
+                return View(owner);
+            }
         }
 
         [HttpGet]
