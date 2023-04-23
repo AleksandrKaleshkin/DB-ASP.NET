@@ -4,12 +4,17 @@
 }
 @model CarDTO
 
-<h1>Редактировать владельца</h1>
+<h1>Редактировать автомобиль</h1>
 
-@using (Html.BeginForm("Edit", "Car", FormMethod.Post))
+@using (Html.BeginForm("Edit", "Car", FormMethod.Post,  new { enctype = "multipart/form-data" }))
 {
     <fieldset>
         @Html.HiddenFor(m => m.Id)
+        <p>
+            @Html.LabelFor(m => m.NameImage, "Фото")
+            <br />
+            <input type="file"  name="uploadedFile" />
+        </p>
         <p>
             @Html.LabelFor(m => m.Brand, "Марка")
             <br />

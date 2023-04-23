@@ -5,7 +5,11 @@
 
 <h1>Добавить Автомобиль</h1>
 
-<form method="post" asp-action="Create">
+<form method="post" asp-action="Create" enctype="multipart/form-data">
+
+    <label asp-for="NameImage">Фото</label>
+    <input type="file" name="uploadedFile" />
+
     <label asp-for="Brand">Марка</label>
     <input asp-for="Brand" />
     <span asp-validation-for="Brand"></span>

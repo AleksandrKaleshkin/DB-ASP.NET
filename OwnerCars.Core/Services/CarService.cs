@@ -20,12 +20,15 @@ namespace OwnerCars.Core.Services
         {
             Owner owner = DataBase.Owners.Get(carDto.OwnerId);
 
+
             if (owner == null)
             {
                 throw new ValidationException("Владелец не найден!", "");                
             }
             Car car = new Car
             {
+                NameImage= carDto.NameImage,
+                Path=carDto.Path,
                 Brand = carDto.Brand,
                 Model = carDto.Model,
                 Year = carDto.Year,
@@ -72,6 +75,8 @@ namespace OwnerCars.Core.Services
         public void Update(CarDTO carDto)
         {
             var car = DataBase.Cars.Get(carDto.Id);
+            car.NameImage = carDto.NameImage;
+            car.Path = carDto.Path;
             car.Brand = carDto.Brand;
             car.Model = carDto.Model;
             car.Year = carDto.Year;

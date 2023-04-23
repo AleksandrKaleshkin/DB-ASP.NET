@@ -8,6 +8,10 @@ namespace OwnerCars.DataBase.Models
         [Key]
         public int Id { get; set; }
 
+        public string? NameImage { get; set; }
+
+        public string? Path { get; set; }
+
         public string? Brand { get; set; }
 
         public string? Model { get; set; }

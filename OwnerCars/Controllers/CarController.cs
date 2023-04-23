@@ -7,17 +7,20 @@ using OwnerCars.Core.Models;
 using OwnerCars.DataBase.Models;
 using OwnerCars.DataBase.Repositories;
 using OwnerCars.Models;
+using System.IO;
 
 namespace OwnerCars.Api.Controllers
 {
     public class CarController : Controller
     {
         readonly ICarService carService;
+        IWebHostEnvironment _appEnvironment;
 
 
-        public CarController(ICarService serv)
+        public CarController(ICarService serv, IWebHostEnvironment appEnvironment)
         {
             carService= serv;
+            _appEnvironment = appEnvironment;
         }
 
 
@@ -93,10 +96,17 @@ namespace OwnerCars.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CarDTO car)
+        public IActionResult Create(CarDTO car, IFormFile uploadedFile)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && uploadedFile!= null)
             {
+                string Path = "/Files/"+uploadedFile.FileName;
+                using(var fileStream = new FileStream(_appEnvironment.WebRootPath+Path, FileMode.Create))
+                {
+                    uploadedFile.CopyTo(fileStream);
+                }
+                car.NameImage = uploadedFile.Name;
+                car.Path = Path;
                 carService.AddCar(car);
                 return RedirectToAction("Index");
             }
@@ -127,8 +137,15 @@ namespace OwnerCars.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(CarDTO car)
+        public IActionResult Edit(CarDTO car, IFormFile uploadedFile)
         {
+            string Path = "/Files/" + uploadedFile.FileName;
+            using (var fileStream = new FileStream(_appEnvironment.WebRootPath + Path, FileMode.Create))
+            {
+                uploadedFile.CopyTo(fileStream);
+            }
+            car.NameImage = uploadedFile.Name;
+            car.Path = Path;
             carService.Update(car);
             return RedirectToAction("Index");
         }

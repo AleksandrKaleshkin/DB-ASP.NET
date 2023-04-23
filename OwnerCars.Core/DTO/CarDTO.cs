@@ -9,6 +9,10 @@ namespace OwnerCars.Core.DTO
     {
         public int Id { get; set; }
 
+        public string? NameImage { get; set; }
+
+        public string? Path { get; set; }
+
         [Required(ErrorMessage = "Не указана марка")]
         [StringLength(100,MinimumLength = 2, ErrorMessage = "Длина строки может быть от 2 до 100 символов")]
         public string Brand { get; set; }
